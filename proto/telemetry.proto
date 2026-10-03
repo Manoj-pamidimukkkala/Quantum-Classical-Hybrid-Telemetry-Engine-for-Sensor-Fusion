@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package telemetry;
+
+message SensorPacket {
+  uint64 timestamp_ns = 1;
+  uint32 sensor_id = 2;
+  double raw_signal = 3;
+  double noise_variance = 4;
+}
+
+message FilteredState {
+  uint64 timestamp_ns = 1;
+  double estimated_state = 2;
+  double error_covariance = 3;
+  uint64 latency_ns = 4;
+}
+
+service TelemetryStream {
+  rpc StreamSensorData (stream SensorPacket) returns (stream FilteredState);
+}
